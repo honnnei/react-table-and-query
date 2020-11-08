@@ -5,8 +5,8 @@ export default function NavbarComponent({ setPage }) {
     return (
         <div>
             <Navbar>
-                <Button onClick={() => setPage('planets')}>Planets</Button>
-                <Button onClick={() => setPage('people')}>People</Button>
+                <Button outline color="info" onClick={() => setPage('planets')}>Planets</Button>
+                <Button outline color="info" onClick={() => setPage('people')}>People</Button>
             </Navbar>
 
         </div>

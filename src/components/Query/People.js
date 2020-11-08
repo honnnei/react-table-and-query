@@ -1,20 +1,28 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
+import { usePaginatedQuery } from 'react-query';
+import { Button } from 'reactstrap';
 
-const fetchPeople = async () => {
-    const res = await fetch('http://swapi.dev/api/people');
+const fetchPeople = async (key, page) => {
+    const res = await fetch(`http://swapi.dev/api/people/?page=${page}`);
     return res.json();
 }
 
 export default function People() {
-    const { data, status } = useQuery('people', fetchPeople);
+    const [page, setPage] = useState(1);
+    const {
+        resolvedData,
+        latestData,
+        status
+    } = usePaginatedQuery(['people', page], fetchPeople);
 
     return (
         <div>
             <h1>People</h1>
+            <Button outline color="info" onClick={() => setPage(prevPage => prevPage - 1)} disabled={page === 1}>Previous Page</Button>
+            <Button outline color="info" onClick={() => setPage(prevPage => prevPage + 1)} disabled={page >= 6}>Next Page</Button>
             <p>{status}</p>
-            {status === 'success' && data.results.map((person, index) => (
-                <p key={index}>{person.name}</p>
+            {status === 'success' && resolvedData.results.map((planet, index) => (
+                <p key={index}>{planet.name}</p>
             ))}
         </div>
     )
